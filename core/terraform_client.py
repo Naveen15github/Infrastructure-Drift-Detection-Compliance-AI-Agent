@@ -84,7 +84,23 @@ class TerraformClient:
             logger.info("DEBUG | No 'Plan:' summary line found in output")
 
         # exit code 2 means changes; not a failure
+        # WORKAROUND: terraform wrapper may return wrong exit codes, so also check plan output
         success = plan_result["exit_code"] in (0, 2)
+        
+        # Parse the plan summary to determine if there are changes
+        import re
+        plan_summary_match = re.search(r'Plan: (\d+) to add, (\d+) to change, (\d+) to destroy\.', plan_result["stdout"])
+        if plan_summary_match:
+            to_add = int(plan_summary_match.group(1))
+            to_change = int(plan_summary_match.group(2))
+            to_destroy = int(plan_summary_match.group(3))
+            has_changes = (to_add + to_change + to_destroy) > 0
+            
+            # Override exit code if we detect changes in the plan output
+            if has_changes and plan_result["exit_code"] == 0:
+                logger.warning("WORKAROUND: Detected changes in plan output but exit code was 0. Overriding to exit code 2.")
+                plan_result["exit_code"] = 2
+        
         return {
             "exit_code": plan_result["exit_code"],
             "stdout": plan_result["stdout"],
