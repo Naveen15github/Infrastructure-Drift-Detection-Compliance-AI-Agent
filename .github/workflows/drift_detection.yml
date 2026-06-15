@@ -1,4 +1,5 @@
 name: Terraform Drift Detection
+# Last updated: 2026-06-15 - Runs every 2 minutes
 
 on:
   schedule:
