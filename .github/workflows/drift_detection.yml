@@ -2,7 +2,7 @@ name: Terraform Drift Detection
 
 on:
   schedule:
-    - cron: "* * * * *"   # Every 1 minute (WARNING: High cost - for testing only!)
+    - cron: "*/2 * * * *"   # Every 2 minutes
   workflow_dispatch:
     inputs:
       reason:
