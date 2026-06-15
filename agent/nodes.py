@@ -96,6 +96,8 @@ def run_terraform_plan_node(state: AgentState) -> Dict:
     if result["stdout"]:
         logger.info("===== TERRAFORM STDOUT (first 500 chars) =====")
         logger.info(result["stdout"][:500])
+        logger.info("===== TERRAFORM STDOUT (FULL OUTPUT) =====")
+        logger.info(result["stdout"])
     
     # Log stderr if present
     if result["stderr"]:
