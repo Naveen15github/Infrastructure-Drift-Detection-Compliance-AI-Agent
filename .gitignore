@@ -1,0 +1,63 @@
+# Environment variables (NEVER commit these!)
+.env
+.env.local
+.env.*.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Terraform
+terraform/.terraform/
+terraform/.terraform.lock.hcl
+terraform/tfplan
+terraform/terraform.tfstate
+terraform/terraform.tfstate.backup
+terraform/*.tfvars
+!terraform/terraform.tfvars.example
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.bak
+test_*.py
+!tests/test_*.py

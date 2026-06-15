@@ -1,0 +1,72 @@
+name: Terraform Drift Detection
+
+on:
+  schedule:
+    - cron: "0 */6 * * *"   # Every 6 hours
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "Reason for manual trigger"
+        required: false
+        default: "Manual drift check"
+
+concurrency:
+  group: terraform-drift
+  cancel-in-progress: false
+
+jobs:
+  drift-detection:
+    name: Drift Detection
+    runs-on: ubuntu-latest
+
+    permissions:
+      id-token: write   # Required for OIDC authentication with AWS
+      contents: read
+
+    env:
+      OPENROUTER_API_KEY_1: ${{ secrets.OPENROUTER_API_KEY_1 }}
+      OPENROUTER_API_KEY_2: ${{ secrets.OPENROUTER_API_KEY_2 }}
+      OPENROUTER_API_KEY_3: ${{ secrets.OPENROUTER_API_KEY_3 }}
+      SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+      AWS_REGION: ${{ secrets.AWS_REGION || 'us-east-1' }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Set up Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "~1.7"
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: ${{ secrets.AWS_ROLE_ARN }}
+          aws-region: ${{ env.AWS_REGION }}
+          # Fallback to static credentials if OIDC role not configured
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+      - name: Install Python dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run drift detection agent
+        run: python -m agent.graph
+        env:
+          TERRAFORM_DIR: terraform
+
+      - name: Upload Terraform plan artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: terraform-plan-${{ github.run_id }}
+          path: terraform/tfplan
+          if-no-files-found: ignore
+          retention-days: 30
