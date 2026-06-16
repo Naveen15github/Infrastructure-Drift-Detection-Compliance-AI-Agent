@@ -46,13 +46,6 @@ jobs:
           echo "Current commit message: $(git log -1 --pretty=%B)"
           echo "Listing agent files to verify latest code:"
           head -20 agent/graph.py
-      
-      - name: Check S3 state file timestamp
-        run: |
-          echo "Checking S3 state file..."
-          aws s3 ls s3://terraform-state-drift-agent-478468758108/drift-agent/ --recursive
-          echo "Last modified time of state file:"
-          aws s3api head-object --bucket terraform-state-drift-agent-478468758108 --key drift-agent/terraform.tfstate --query 'LastModified' --output text
 
       - name: Set up Python 3.11
         uses: actions/setup-python@v5
