@@ -78,6 +78,22 @@ jobs:
       - name: Install Python dependencies
         run: pip install -r requirements.txt
       
+      - name: Debug - Check environment variables
+        run: |
+          echo "Checking if GROQ_API_KEY is set..."
+          if [ -z "$GROQ_API_KEY" ]; then
+            echo "ERROR: GROQ_API_KEY is NOT set!"
+          else
+            echo "SUCCESS: GROQ_API_KEY is set (length: ${#GROQ_API_KEY} characters)"
+            echo "First 10 chars: ${GROQ_API_KEY:0:10}..."
+          fi
+          echo "Checking if SLACK_WEBHOOK_URL is set..."
+          if [ -z "$SLACK_WEBHOOK_URL" ]; then
+            echo "ERROR: SLACK_WEBHOOK_URL is NOT set!"
+          else
+            echo "SUCCESS: SLACK_WEBHOOK_URL is set"
+          fi
+      
       - name: Test terraform plan exit code directly
         id: terraform_test
         continue-on-error: true
@@ -93,6 +109,12 @@ jobs:
       - name: Run drift detection agent
         run: python -m agent.graph
         env:
+          GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+          SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: us-east-1
+          AWS_DEFAULT_REGION: us-east-1
           TERRAFORM_DIR: terraform
 
       - name: Upload Terraform plan artifact
