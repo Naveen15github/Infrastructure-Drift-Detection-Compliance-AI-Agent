@@ -58,6 +58,15 @@ class Settings:
         """Load values from environment after dataclass initialisation."""
         # Groq API (primary)
         self.groq_api_key = os.getenv("GROQ_API_KEY", "")
+        
+        # DEBUG: Print what we got
+        import sys
+        if self.groq_api_key:
+            print(f"[DEBUG] GROQ_API_KEY loaded: {len(self.groq_api_key)} chars, starts with: {self.groq_api_key[:10]}...", file=sys.stderr)
+        else:
+            print("[DEBUG] GROQ_API_KEY is EMPTY or NOT SET in environment!", file=sys.stderr)
+            print(f"[DEBUG] Available env vars: {', '.join([k for k in os.environ.keys() if 'GROQ' in k or 'KEY' in k])}", file=sys.stderr)
+        
         self.groq_model = os.getenv("GROQ_MODEL", self.groq_model)
         self.groq_base_url = os.getenv("GROQ_BASE_URL", self.groq_base_url)
         
