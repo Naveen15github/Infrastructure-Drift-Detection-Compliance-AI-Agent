@@ -80,19 +80,27 @@ jobs:
       
       - name: Debug - Check environment variables
         run: |
+          echo "=== Environment Variable Check ==="
           echo "Checking if GROQ_API_KEY is set..."
           if [ -z "$GROQ_API_KEY" ]; then
-            echo "ERROR: GROQ_API_KEY is NOT set!"
+            echo "❌ ERROR: GROQ_API_KEY is NOT set!"
+            echo "GitHub Secret 'GROQ_API_KEY' is missing or empty."
+            echo "Please add it at: https://github.com/Naveen15github/terraform-agent-/settings/secrets/actions"
+            exit 1
           else
-            echo "SUCCESS: GROQ_API_KEY is set (length: ${#GROQ_API_KEY} characters)"
+            echo "✅ SUCCESS: GROQ_API_KEY is set (length: ${#GROQ_API_KEY} characters)"
             echo "First 10 chars: ${GROQ_API_KEY:0:10}..."
           fi
+          echo ""
           echo "Checking if SLACK_WEBHOOK_URL is set..."
           if [ -z "$SLACK_WEBHOOK_URL" ]; then
-            echo "ERROR: SLACK_WEBHOOK_URL is NOT set!"
+            echo "❌ ERROR: SLACK_WEBHOOK_URL is NOT set!"
+            exit 1
           else
-            echo "SUCCESS: SLACK_WEBHOOK_URL is set"
+            echo "✅ SUCCESS: SLACK_WEBHOOK_URL is set"
           fi
+          echo ""
+          echo "All required secrets are configured!"
       
       - name: Test terraform plan exit code directly
         id: terraform_test
