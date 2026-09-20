@@ -14,7 +14,7 @@
 1. [Project Overview](#-project-overview)
 2. [Tech Stack](#-tech-stack)
 3. [Agent Flow](#-agent-flow-langgraph-state-machine)
-4. [Project Structure](#-project-structure)
+4. [Project Structure](#-project-structure) 
 5. [Infrastructure Setup on AWS](#-step-1--infrastructure-setup-on-aws)
 6. [Configuring GitHub Secrets](#-step-2--configuring-github-secrets)
 7. [GitHub Actions CI/CD Pipeline](#-step-3--github-actions-cicd-pipeline)
@@ -49,7 +49,7 @@ I built this agent to solve that problem autonomously. Here is exactly what it d
 4. **Makes an autonomous decision:** if the risk score is ≤ 30, it runs `terraform apply -auto-approve` to self-heal the infrastructure without human intervention; if the risk score is > 30 or dangerous patterns are found, it escalates
 5. **Fetches CloudTrail audit logs** to identify who made the unauthorized change, when, and from where
 6. **Posts a rich Slack notification** with all drift details, the LLM risk assessment, dangerous patterns found, and the full CloudTrail trail of the actor who caused the drift
-
+ 
 This gives teams full visibility into infrastructure compliance without any manual monitoring effort.
 
 ---
