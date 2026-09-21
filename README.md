@@ -810,7 +810,6 @@ pytest-mock==3.12.0
 
 **Naveen G**
 - GitHub: [@Naveen15github](https://github.com/Naveen15github)
-- AWS Account: `us-east-1`
 
 ---
 
