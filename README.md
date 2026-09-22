@@ -50,7 +50,7 @@ I built this agent to solve that problem autonomously. Here is exactly what it d
 5. **Fetches CloudTrail audit logs** to identify who made the unauthorized change, when, and from where
 6. **Posts a rich Slack notification** with all drift details, the LLM risk assessment, dangerous patterns found, and the full CloudTrail trail of the actor who caused the drift
  
-This gives teams full visibility into infrastructure compliance without any manual monitoring effort.
+This gives teams full visibility into infrastructure compliance without any manual monitoring effort.  
 
 ---
 
