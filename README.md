@@ -1,6 +1,6 @@
 # 🛡️ Infrastructure Drift Detection & Compliance AI Agent
 
-> An autonomous, AI-powered agent that continuously monitors AWS infrastructure for configuration drift, assesses risk using a large language model, auto-remediates low-risk changes, and escalates critical violations to Slack with full CloudTrail audit trails — all driven by GitHub Actions on a 15-minute schedule.
+> An autonomous, AI-powered agent that continuously monitors AWS infrastructure for configuration drift, assesses risk using a large language model, auto-remediates low-risk changes, and escalates critical violations to Slack with full CloudTrail audit trails — all driven by GitHub Actions on a 15-minute schedule. 
 
 ---
 
